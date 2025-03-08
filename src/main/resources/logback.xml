@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <property name="LOG_DIR" value="./logs"/>
+  <property name="LOG_FILE" value="${LOG_DIR}/trail"/>
+  <property name="LOG_FILE_ZIP" value="${LOG_DIR}/zip/trail"/>
+  <property name="LOG_ERROR" value="${LOG_DIR}/error"/>
+  <property name="LOG_ERROR_ZIP" value="${LOG_DIR}/zip/error"/>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_FILE}.log</file>
+    <append>true</append>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>
+        %d{yyyy-MM-dd_HH:mm:ss.SSSZ} [%thread] %-5level %logger{36} - %msg%n
+      </pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_FILE_ZIP}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+      <maxFileSize>20MB</maxFileSize>
+      <maxHistory>30</maxHistory>
+      <totalSizeCap>10GB</totalSizeCap>
+    </rollingPolicy>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+    <discardingThreshold>0</discardingThreshold>
+    <queueSize>512</queueSize>
+    <maxFlushTime>5000</maxFlushTime>
+    <neverBlock>true</neverBlock>
+  </appender>
+
+  <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_ERROR}.log</file>
+    <append>true</append>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>
+        %d{yyyy-MM-dd_HH:mm:ss.SSSZ} [%thread] %-5level %logger{36} - %msg%n
+      </pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_ERROR_ZIP}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+      <maxFileSize>20MB</maxFileSize>
+      <maxHistory>30</maxHistory>
+      <totalSizeCap>5GB</totalSizeCap>
+    </rollingPolicy>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
+    <discardingThreshold>0</discardingThreshold>
+    <queueSize>512</queueSize>
+    <maxFlushTime>5000</maxFlushTime>
+    <neverBlock>true</neverBlock>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>
+        %d{yyyy-MM-dd_HH:mm:ss.SSSZ} [%thread] %-5level %logger{36} - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+<!--    <appender-ref ref="FILE"/>-->
+<!--    <appender-ref ref="ERROR"/>-->
+  </root>
+
+</configuration>

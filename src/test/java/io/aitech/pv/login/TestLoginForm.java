@@ -15,7 +15,7 @@ public class TestLoginForm extends JFrame {
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         setLayout(new MigLayout("al center center"));
-        add(new LoginForm());
+//        add(new LoginForm(vertx, context, pool)); // TODO implement test
     }
 
     public static void main(String[] args) {
