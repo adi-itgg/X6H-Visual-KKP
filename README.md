@@ -2,6 +2,9 @@
 
 this project build using java swing with flatlaf and miglayout for modern UI.
 
+### Login Form
+![sample login](preview/login.png)
+
 ## Minimum Project Requirement
 
 - Login
