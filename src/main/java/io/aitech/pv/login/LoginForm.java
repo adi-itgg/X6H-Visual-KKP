@@ -22,10 +22,10 @@ public class LoginForm extends JPanel {
                 "font:bold +15;");
         add(lbTitle, "gapy 8 8");
 
-        add(new JLabel("Login untuk mengakses dashboard,", JLabel.CENTER));
-        add(new JLabel("monitoring dan konfigurasi aplikasi.", JLabel.CENTER));
+        add(new JLabel("Login untuk mengakses Dashboard,", JLabel.CENTER), "gapy 8");
+        add(new JLabel("monitoring dan konfigurasi aplikasi.", JLabel.CENTER), "gapy 0 32");
 
-        JLabel lbSeparator = new JLabel("Masuk dengan email dan password");
+        JLabel lbSeparator = new JLabel("Masuk Dashboard");
         lbSeparator.putClientProperty(FlatClientProperties.STYLE,
                 "foreground:$Label.disabledForeground;" +
                 "font:-1;");
@@ -63,7 +63,7 @@ public class LoginForm extends JPanel {
         txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan kata sandi");
         txtPassword.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("login/icon/password.svg", 0.35f));
 
-        add(txtPassword);
+        add(txtPassword, "gapy 0 20");
 
         JButton cmdSignIn = new JButton("Masuk", new FlatSVGIcon("login/icon/next.svg")) {
             @Override
