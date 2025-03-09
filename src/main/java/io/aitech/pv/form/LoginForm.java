@@ -1,8 +1,11 @@
-package io.aitech.pv.login;
+package io.aitech.pv.form;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import io.aitech.pv.CustomFocusTraversalPolicy;
+import io.aitech.pv.MainFrame;
 import io.aitech.pv.model.ActionCommand;
 import io.aitech.pv.repository.LoginRepository;
 import io.aitech.pv.repository.LoginRepositoryImpl;
@@ -15,11 +18,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.function.Consumer;
+import java.util.List;
 
-public class LoginForm extends JPanel implements ActionListener, Consumer<ActionEvent> {
+public class LoginForm extends JPanel implements ActionListener {
 
     private static final Logger log = LoggerFactory.getLogger(LoginForm.class);
 
@@ -27,6 +31,7 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
 
     private final Vertx vertx;
     private final Context context; // virtual thread context
+    private final MainFrame mainFrame;
     private final LoginRepository loginRepository;
 
     // UI Components
@@ -35,14 +40,15 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
     private final JButton btnSignIn;
     private final JButton btnForgotPassword;
 
-    public LoginForm(Vertx vertx, Context context, Pool pool) {
+    public LoginForm(Vertx vertx, Context context, Pool pool, MainFrame mainFrame) {
         this.vertx = vertx;
         this.context = context;
+        this.mainFrame = mainFrame;
         this.loginRepository = new LoginRepositoryImpl(pool);
 
         setLayout(new MigLayout("wrap,gapy 3", "[fill,300]"));
 
-        add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 1.5f)));
+        add(new JLabel(new FlatSVGIcon("icon/login_logo.svg", 1.5f)));
 
         JLabel lbTitle = new JLabel("Selamat datang", JLabel.CENTER);
         lbTitle.putClientProperty(FlatClientProperties.STYLE,
@@ -70,8 +76,8 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
         txtEmail.putClientProperty(FlatClientProperties.STYLE,
                 "iconTextGap:10;");
         txtEmail.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan email");
-        txtEmail.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("login/icon/email.svg", 0.35f));
-
+        txtEmail.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("icon/email.svg", 0.35f));
+        txtEmail.setActionCommand(ActionCommand.LOGIN_TXT_PASS_FOCUS.name());
         add(txtEmail);
 
         JLabel lbPassword = new JLabel("Password");
@@ -81,6 +87,7 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
         add(lbPassword, "gapy 10 5,split 2");
 
         this.btnForgotPassword = createNoBorderButton("Lupa kata sandi ?");
+        btnForgotPassword.setActionCommand(ActionCommand.FORGOT_PASSWORD.name());
         add(btnForgotPassword, "grow 0,gapy 10 5");
 
         this.txtPassword = new JPasswordField();
@@ -88,11 +95,11 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
                 "iconTextGap:10;" +
                         "showRevealButton:true;");
         txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Masukkan kata sandi");
-        txtPassword.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("login/icon/password.svg", 0.35f));
-
+        txtPassword.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("icon/password.svg", 0.35f));
+        txtPassword.setActionCommand(ActionCommand.LOGIN_BTN_FOCUS.name());
         add(txtPassword, "gapy 0 20");
 
-        this.btnSignIn = new JButton("Masuk", new FlatSVGIcon("login/icon/next.svg")) {
+        this.btnSignIn = new JButton("Masuk", new FlatSVGIcon("icon/next.svg")) {
             @Override
             public boolean isDefaultButton() {
                 return true;
@@ -103,9 +110,17 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
                         "iconTextGap:10;");
         btnSignIn.setHorizontalTextPosition(JButton.LEADING);
         btnSignIn.setActionCommand(ActionCommand.LOGIN.name());
-        btnSignIn.addActionListener(this);
         add(btnSignIn, "gapy n 10");
 
+        // set action listeners
+        btnForgotPassword.addActionListener(this);
+        btnSignIn.addActionListener(this);
+        txtEmail.addActionListener(this);
+        txtPassword.addActionListener(this);
+
+        // focus for tab navigation
+        List<Component> order = List.of(txtEmail, txtPassword, btnSignIn, btnForgotPassword);
+        mainFrame.setFocusTraversalPolicy(new CustomFocusTraversalPolicy(order));
     }
 
     private JSeparator createSeparator() {
@@ -128,28 +143,26 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent actionEvent) {
         context.runOnContext(v -> {
             try {
-                this.accept(e);
+                switch (ActionCommand.valueOf(actionEvent.getActionCommand())) {
+                    case LOGIN -> {
+                        log.info("Login button clicked");
+                        login();
+                    }
+                    case FORGOT_PASSWORD -> { // TODO implement forgot password
+                        log.info("Forgot password button clicked");
+                    }
+                    case LOGIN_TXT_PASS_FOCUS -> txtPassword.requestFocus();
+                    case LOGIN_BTN_FOCUS -> btnSignIn.doClick();
+                    default -> throw new IllegalStateException("Unexpected value: " + actionEvent.getActionCommand());
+                }
             } catch (Throwable error) {
                 log.error("Failed to login", error);
                 showError(error.getMessage());
             }
         });
-    }
-
-
-    @Override
-    public void accept(ActionEvent actionEvent) {
-        log.info("Login button clicked");
-
-        switch (ActionCommand.valueOf(actionEvent.getActionCommand())) {
-            case LOGIN -> login();
-            case FORGOT_PASSWORD -> {
-            } // TODO implement forgot password
-        }
-
     }
 
     private void showError(String message) {
@@ -196,7 +209,13 @@ public class LoginForm extends JPanel implements ActionListener, Consumer<Action
         String password = row.getString("password");
         if (verifyer.verify(txtPassword.getPassword(), password).verified) {
             log.info("Login success");
-            // TODO implement redirect to dashboard
+
+            DashboardForm dashboardForm = new DashboardForm(mainFrame);
+            dashboardForm.setSelectedMenu(0, 0);
+            dashboardForm.hideMenu();
+
+            mainFrame.setSize(new Dimension(1366, 768));
+            mainFrame.setContainer(dashboardForm);
             return;
         }
 

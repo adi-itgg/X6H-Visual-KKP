@@ -84,13 +84,13 @@ public class MainVerticle extends AbstractVerticle {
         // setup look and feel
         vertx.executeBlocking(() -> {
             FlatRobotoFont.install();
-            FlatLaf.registerCustomDefaultsSource("login.themes");
+            FlatLaf.registerCustomDefaultsSource("themes");
             FlatMacDarkLaf.setup();
             UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
             return null;
         }).await();
         // show main form
-        EventQueue.invokeLater(() -> new MainFrame(vertx, context, pool));
+        EventQueue.invokeLater(() -> new MainFrame(vertx, context, pool, config));
     }
 
 }
