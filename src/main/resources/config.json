@@ -8,5 +8,14 @@
     "password": "123qwe",
     "pipeliningLimit": 16,
     "poolSize": 8
+  },
+  "mysql": {
+    "host": "10.8.0.1",
+    "port": 3306,
+    "database": "dev-sipa-x6h",
+    "user": "user-vpn",
+    "password": "123qwe",
+    "pipeliningLimit": 8,
+    "poolSize": 2
   }
 }

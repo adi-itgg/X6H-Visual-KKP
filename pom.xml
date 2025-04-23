@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
-        <vertx.version>5.0.0.CR5</vertx.version>
+        <vertx.version>5.0.0.CR7</vertx.version>
         <logback.version>1.5.17</logback.version>
         <slf4j.version>2.0.17</slf4j.version>
         <jackson-databind.version>2.16.1</jackson-databind.version>
@@ -45,8 +45,6 @@
     <dependencies>
 
 
-
-
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-launcher-application</artifactId>
@@ -57,7 +55,7 @@
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
-            <artifactId>vertx-pg-client</artifactId>
+            <artifactId>vertx-mysql-client</artifactId>
         </dependency>
 
 
@@ -77,11 +75,11 @@
             <version>2.137</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.ongres.scram</groupId>
             <artifactId>scram-client</artifactId>
             <version>3.1</version>
-        </dependency>
+        </dependency>-->
 
 
         <dependency>
@@ -150,15 +148,18 @@
                                 </filter>
                             </filters>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>${launcher.class}</Main-Class>
                                         <Main-Verticle>${main.verticle}</Main-Verticle>
                                     </manifestEntries>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
-                            <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
+                            <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar
+                            </outputFile>
                         </configuration>
                     </execution>
                 </executions>

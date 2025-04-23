@@ -13,8 +13,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.launcher.application.VertxApplication;
-import io.vertx.pgclient.PgBuilder;
-import io.vertx.pgclient.PgConnectOptions;
+import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.PoolOptions;
 import org.slf4j.Logger;
@@ -64,7 +63,8 @@ public class MainVerticle extends AbstractVerticle {
 
         // setup database
         log.info("Connecting to database... host: {}, port: {}, database: {}, user: {}", config.postgres().host(), config.postgres().port(), config.postgres().database(), config.postgres().user());
-        final PgConnectOptions connectOptions = new PgConnectOptions()
+        // Postgres
+        /*final PgConnectOptions connectOptions = new PgConnectOptions()
                 .setPort(config.postgres().port())
                 .setHost(config.postgres().host())
                 .setDatabase(config.postgres().database())
@@ -78,7 +78,21 @@ public class MainVerticle extends AbstractVerticle {
                 .connectingTo(connectOptions)
                 .with(poolOptions)
                 .using(vertx)
-                .build();
+                .build();*/
+        // MySQL
+        MySQLConnectOptions connectOptions = new MySQLConnectOptions()
+                .setPort(config.mysql().port())
+                .setHost(config.mysql().host())
+                .setDatabase(config.mysql().database())
+                .setUser(config.mysql().user())
+                .setPassword(config.mysql().password());
+
+        // Pool options
+        PoolOptions poolOptions = new PoolOptions()
+                .setMaxSize(config.postgres().poolSize());
+
+        // Create the pooled client
+        Pool pool = Pool.pool(vertx, connectOptions, poolOptions);
 
 
         // setup look and feel

@@ -16,7 +16,7 @@ public class LoginRepositoryImpl implements LoginRepository {
 
     @Override
     public Future<Row> findUserByEmail(String email) {
-        return pool.preparedQuery("SELECT * FROM m_user WHERE lower(email) = $1 LIMIT 1")
+        return pool.preparedQuery("SELECT * FROM m_user WHERE lower(email) = ? LIMIT 1")
                 .execute(Tuple.of(email.toLowerCase()))
                 .map(rows -> {
                     if (rows.size() > 0) {

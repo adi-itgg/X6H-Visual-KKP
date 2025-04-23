@@ -4,6 +4,7 @@ public class AppConfiguration {
 
     private String appName;
     private PostgresConfiguration postgres;
+    private MySQLConfiguration mysql;
 
 
     public String appName() {
@@ -12,6 +13,10 @@ public class AppConfiguration {
 
     public PostgresConfiguration postgres() {
         return postgres;
+    }
+
+    public MySQLConfiguration mysql() {
+        return mysql;
     }
 
 }
