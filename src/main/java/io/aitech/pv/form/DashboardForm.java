@@ -5,7 +5,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
 import io.aitech.pv.MainFrame;
 import io.aitech.pv.form.content.FormDashboard;
-import io.aitech.pv.form.content.MasterStudentForm;
+import io.aitech.pv.form.content.student.MasterStudentForm;
 import io.aitech.pv.form.menu.Menu;
 import io.aitech.pv.form.menu.MenuAction;
 
@@ -16,11 +16,14 @@ import java.awt.event.ActionEvent;
 
 public class DashboardForm extends JLayeredPane implements LayoutManager {
 
+    private final MainFrame mainFrame;
     private final Menu menu;
     private final JPanel panelBody;
     private JButton menuButton;
 
     public DashboardForm(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+
         setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(this);
         menu = new Menu(mainFrame.config().appName());
@@ -58,8 +61,7 @@ public class DashboardForm extends JLayeredPane implements LayoutManager {
     private void initMenuEvent() {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             if (index == 0) {
-//                showForm(new FormDashboard());
-                showForm(new MasterStudentForm().getMainPanel());
+                showForm(new FormDashboard());
             } else if (index == 1) {
                 if (subIndex == 1) {
 //                    showForm(new FormInbox());
@@ -68,6 +70,8 @@ public class DashboardForm extends JLayeredPane implements LayoutManager {
                 } else {
                     action.cancel();
                 }
+            } else if (index == 2) {
+                showForm(new MasterStudentForm(mainFrame));
             } else if (index == 9) {
 //                logout();
             } else {
@@ -92,6 +96,9 @@ public class DashboardForm extends JLayeredPane implements LayoutManager {
         menu.hideMenuItem();
     }
 
+    public void showForm(BaseForm form) {
+        showForm(form.getMainPanel());
+    }
     public void showForm(Component component) {
         panelBody.removeAll();
         panelBody.add(component);
