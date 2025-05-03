@@ -56,4 +56,14 @@ public class ParentRepositoryImpl implements ParentRepository {
                         """).execute(Tuple.of(id))
                 .mapEmpty();
     }
+
+
+    @Override
+    public Future<Void> addParent(String nik, String name, String job, String address, String phoneNumber) {
+        return pool.preparedQuery("""
+                        INSERT INTO m_parent (nik, name, job, address, phone_number)
+                        VALUES (?, ?, ?, ?, ?)
+                        """).execute(Tuple.of(nik, name, job, address, phoneNumber))
+                .mapEmpty();
+    }
 }

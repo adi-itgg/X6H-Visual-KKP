@@ -14,8 +14,11 @@ public final class MasterParentForm extends BaseMasterFormContent<ParentReposito
     private JButton tambahButton;
     private JTable mTable;
 
+    private final ParentRepository parentRepository;
+
     public MasterParentForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.parentRepository());
+        this.parentRepository = mainFrame.parentRepository();
         initialize();
     }
 
@@ -46,7 +49,11 @@ public final class MasterParentForm extends BaseMasterFormContent<ParentReposito
 
     @Override
     protected Component showAddRowForm(JFrame frame) {
-        return null;
+        frame.setSize(600, 420);
+        return new AddParentForm(parentRepository, () -> {
+            fetchData();
+            frame.dispose();
+        }).getMainPanel();
     }
 
 }

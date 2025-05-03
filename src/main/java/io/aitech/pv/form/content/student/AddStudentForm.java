@@ -119,6 +119,7 @@ public class AddStudentForm implements ActionListener {
         }
         char gender = lakiLakiRadioButton.isSelected() ? 'L' : 'P';
         studentRepository.addStudent(nameTxt.getText(), gender, bornDate, bornPlaceTxt.getText(), addressRichTxt.getText(), parent.id).onSuccess(v -> {
+            JOptionPane.showMessageDialog(mp, "Siswa berhasil ditambahkan");
             updateTable.run();
         }).onFailure(e1 -> {
             log.error("Failed to add student", e1);

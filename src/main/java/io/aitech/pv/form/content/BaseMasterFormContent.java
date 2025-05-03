@@ -126,7 +126,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
     }
 
     private void addRow(ActionEvent actionEvent) {
-        JFrame frame = new JFrame("Tambahkan Siswa");
+        JFrame frame = new JFrame("Tambahkan Data");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 420);
         frame.setLocationRelativeTo(null);
