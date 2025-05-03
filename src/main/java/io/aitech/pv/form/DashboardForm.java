@@ -5,6 +5,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
 import io.aitech.pv.MainFrame;
 import io.aitech.pv.form.content.FormDashboard;
+import io.aitech.pv.form.content.MasterStudentForm;
 import io.aitech.pv.form.menu.Menu;
 import io.aitech.pv.form.menu.MenuAction;
 
@@ -57,7 +58,8 @@ public class DashboardForm extends JLayeredPane implements LayoutManager {
     private void initMenuEvent() {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             if (index == 0) {
-                showForm(new FormDashboard());
+//                showForm(new FormDashboard());
+                showForm(new MasterStudentForm().getMainPanel());
             } else if (index == 1) {
                 if (subIndex == 1) {
 //                    showForm(new FormInbox());

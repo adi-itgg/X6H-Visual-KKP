@@ -2,16 +2,10 @@ package io.aitech.pv.form;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import io.aitech.pv.CustomFocusTraversalPolicy;
 import io.aitech.pv.MainFrame;
 import io.aitech.pv.model.ActionCommand;
-import io.aitech.pv.repository.LoginRepository;
-import io.aitech.pv.repository.LoginRepositoryImpl;
-import io.vertx.core.Context;
-import io.vertx.core.Vertx;
-import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.Row;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
@@ -29,10 +23,7 @@ public class LoginForm extends JPanel implements ActionListener {
 
     private final BCrypt.Verifyer verifyer = BCrypt.verifyer(BCrypt.Version.VERSION_2A);
 
-    private final Vertx vertx;
-    private final Context context; // virtual thread context
     private final MainFrame mainFrame;
-    private final LoginRepository loginRepository;
 
     // UI Components
     private final JTextField txtEmail;
@@ -40,11 +31,8 @@ public class LoginForm extends JPanel implements ActionListener {
     private final JButton btnSignIn;
     private final JButton btnForgotPassword;
 
-    public LoginForm(Vertx vertx, Context context, Pool pool, MainFrame mainFrame) {
-        this.vertx = vertx;
-        this.context = context;
+    public LoginForm(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-        this.loginRepository = new LoginRepositoryImpl(pool);
 
         setLayout(new MigLayout("wrap,gapy 3", "[fill,300]"));
 
@@ -144,34 +132,24 @@ public class LoginForm extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        context.runOnContext(v -> {
-            try {
-                switch (ActionCommand.valueOf(actionEvent.getActionCommand())) {
-                    case LOGIN -> {
-                        log.info("Login button clicked");
-                        login();
-                    }
-                    case FORGOT_PASSWORD -> { // TODO implement forgot password
-                        log.info("Forgot password button clicked");
-                    }
-                    case LOGIN_TXT_PASS_FOCUS -> txtPassword.requestFocus();
-                    case LOGIN_BTN_FOCUS -> btnSignIn.doClick();
-                    default -> throw new IllegalStateException("Unexpected value: " + actionEvent.getActionCommand());
+        mainFrame.runVirtualThread(() -> {
+            switch (ActionCommand.valueOf(actionEvent.getActionCommand())) {
+                case LOGIN -> {
+                    log.info("Login button clicked");
+                    login();
                 }
-            } catch (Throwable error) {
-                log.error("Failed to login", error);
-                showError(error.getMessage());
+                case FORGOT_PASSWORD -> { // TODO implement forgot password
+                    log.info("Forgot password button clicked");
+                }
+                case LOGIN_TXT_PASS_FOCUS -> txtPassword.requestFocus();
+                case LOGIN_BTN_FOCUS -> btnSignIn.doClick();
+                default -> throw new IllegalStateException("Unexpected value: " + actionEvent.getActionCommand());
             }
-        });
+        }).onFailure(e -> enableControls());
     }
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-        enableControls();
-    }
-
-    private void showInfo(String message) {
-        JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
         enableControls();
     }
 
@@ -191,16 +169,18 @@ public class LoginForm extends JPanel implements ActionListener {
         btnSignIn.setEnabled(false);
 
         if (txtEmail.getText().isBlank()) {
-            showInfo("Email tidak boleh kosong");
-            return;
+//            showInfo("Email tidak boleh kosong");
+//            return;
+            txtEmail.setText("adi@yopmail.com"); // for test TODO remove
         }
 
         if (txtPassword.getPassword().length == 0) {
-            showInfo("Kata sandi tidak boleh kosong");
-            return;
+//            showInfo("Kata sandi tidak boleh kosong");
+//            return;
+            txtPassword.setText("123qwe"); // for test TODO remove
         }
 
-        Row row = loginRepository.findUserByEmail(txtEmail.getText()).await();
+        Row row = mainFrame.loginRepository().findUserByEmail(txtEmail.getText()).await();
         if (row == null) {
             showError("Email tidak ditemukan");
             return;
