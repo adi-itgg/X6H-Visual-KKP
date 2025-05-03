@@ -8,6 +8,7 @@ import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.Tuple;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class StudentRepositoryImpl implements StudentRepository {
 
@@ -49,7 +50,12 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public Future<Void> save(Long id, String name, String gender, String birthPlace, LocalDate birthDate, String address) {
+    public Future<Void> save(List<Object> params) {
+        Tuple tuple = Tuple.tuple();
+        for (int i = 1; i < params.size(); i++) {
+            tuple.addValue(params.get(i));
+        }
+        tuple.addValue(params.getFirst());
         return pool.preparedQuery("""
                         UPDATE m_student
                             SET name = ?,
@@ -59,7 +65,16 @@ public class StudentRepositoryImpl implements StudentRepository {
                                 address = ?,
                                 updated_at = CURRENT_TIMESTAMP
                         WHERE id = ?
-                        """).execute(Tuple.of(name, gender, birthPlace, birthDate, address, id))
+                        """).execute(tuple)
+                .mapEmpty();
+    }
+
+    @Override
+    public Future<Void> delete(Object id) {
+        return pool.preparedQuery("""
+                        DELETE FROM m_student
+                        WHERE id = ?
+                        """).execute(Tuple.of(id))
                 .mapEmpty();
     }
 

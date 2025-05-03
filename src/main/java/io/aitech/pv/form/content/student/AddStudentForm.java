@@ -31,8 +31,8 @@ public class AddStudentForm implements ActionListener {
     private final Runnable updateTable;
     private final DatePicker datePicker;
 
-    public AddStudentForm(MainFrame mainFrame, Runnable updateTable) {
-        this.studentRepository = mainFrame.studentRepository();
+    public AddStudentForm(StudentRepository studentRepository, Runnable updateTable) {
+        this.studentRepository = studentRepository;
         this.updateTable = updateTable;
 
         lakiLakiRadioButton.addActionListener(e -> {

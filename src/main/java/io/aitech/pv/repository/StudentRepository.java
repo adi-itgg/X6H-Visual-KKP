@@ -6,11 +6,7 @@ import io.vertx.sqlclient.RowSet;
 
 import java.time.LocalDate;
 
-public interface StudentRepository {
-
-    Future<RowSet<Row>> fetchAll(String keyword);
-
-    Future<Void> save(Long id, String name, String gender, String birthPlace, LocalDate birthDate, String address);
+public interface StudentRepository extends BaseMasterRepository {
 
     Future<RowSet<Row>> fetchParentNames();
 
