@@ -5,7 +5,9 @@ import io.aitech.pv.config.AppConfiguration;
 import io.aitech.pv.form.LoginForm;
 import io.aitech.pv.repository.LoginRepository;
 import io.aitech.pv.repository.LoginRepositoryImpl;
+import io.aitech.pv.repository.ParentRepository;
 import io.aitech.pv.repository.StudentRepository;
+import io.aitech.pv.repository.impl.ParentRepositoryImpl;
 import io.aitech.pv.repository.impl.StudentRepositoryImpl;
 import io.aitech.pv.util.URunnable;
 import io.vertx.core.Context;
@@ -32,6 +34,7 @@ public class MainFrame extends JFrame {
     // repositories
     private final LoginRepository loginRepository;
     private final StudentRepository studentRepository;
+    private final ParentRepository parentRepository;
 
     public MainFrame(Vertx vertx, Context context, Pool pool, AppConfiguration config) {
         this.vertx = vertx;
@@ -42,6 +45,7 @@ public class MainFrame extends JFrame {
         // initialize repositories
         this.loginRepository = new LoginRepositoryImpl(pool);
         this.studentRepository = new StudentRepositoryImpl(pool);
+        this.parentRepository = new ParentRepositoryImpl(pool);
 
 
         // setup UI
@@ -93,5 +97,9 @@ public class MainFrame extends JFrame {
 
     public StudentRepository studentRepository() {
         return studentRepository;
+    }
+
+    public ParentRepository parentRepository() {
+        return parentRepository;
     }
 }

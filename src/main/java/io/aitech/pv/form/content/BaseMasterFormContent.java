@@ -1,0 +1,174 @@
+package io.aitech.pv.form.content;
+
+import io.aitech.pv.form.BaseForm;
+import io.aitech.pv.misc.MouseWithKeyAdapter;
+import io.aitech.pv.repository.BaseMasterRepository;
+import io.vertx.core.Timer;
+import io.vertx.core.Vertx;
+import io.vertx.sqlclient.Row;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public abstract class BaseMasterFormContent<R extends BaseMasterRepository> extends MouseWithKeyAdapter implements BaseForm {
+
+    protected final Logger log = LoggerFactory.getLogger(getClass().asSubclass(getClass()));
+
+    protected final Vertx vertx;
+    protected final R repository;
+
+    protected DefaultTableModel model;
+    protected JPopupMenu popupMenu;
+
+    protected Timer searchDelayTimer;
+
+    public BaseMasterFormContent(Vertx vertx, R repository) {
+        this.vertx = vertx;
+        this.repository = repository;
+    }
+
+    protected void initialize() {
+        // initialize Table
+        this.model = new DefaultTableModel(getHeaderColumns(), 0);
+        getTable().setModel(model);
+
+        // initialize Context Menu
+        this.popupMenu = new JPopupMenu();
+        JMenuItem itemRefresh = new JMenuItem("Refresh");
+        JMenuItem itemSave = new JMenuItem("Simpan");
+        JMenuItem itemHapus = new JMenuItem("Hapus");
+
+        popupMenu.add(itemRefresh);
+        popupMenu.add(itemSave);
+        popupMenu.add(itemHapus);
+
+        getTable().addMouseListener(this);
+
+        itemRefresh.addActionListener(a -> fetchData());
+        itemSave.addActionListener(this::saveRow);
+        itemHapus.addActionListener(this::deleteRow);
+
+        getCariText().addKeyListener(this);
+
+        getTambahButton().addActionListener(this::addRow);
+
+        // fetch data from database
+        fetchData();
+    }
+
+    protected abstract String[] getHeaderColumns();
+
+    protected abstract JTextField getCariText();
+
+    protected abstract JButton getTambahButton();
+
+    protected abstract JTable getTable();
+
+    protected abstract Component showAddRowForm(JFrame frame);
+
+    protected void fetchData() {
+        String keyword = getCariText().getText();
+        repository.fetchAll(keyword).onSuccess(v -> {
+            model.setRowCount(0); // clear table
+            for (Row row : v) {
+                Object[] data = new Object[row.size()];
+                for (int i = 0; i < row.size(); i++) {
+                    data[i] = row.getValue(i);
+                }
+                model.addRow(data);
+            }
+        }).onFailure(e -> {
+            log.error("Failed to fetch data", e);
+            JOptionPane.showMessageDialog(getMainPanel(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        });
+    }
+
+    private void onSearch() {
+        if (searchDelayTimer != null) {
+            searchDelayTimer.cancel();
+        }
+        searchDelayTimer = vertx.timer(800, TimeUnit.MILLISECONDS);
+        searchDelayTimer.onSuccess(v -> fetchData());
+    }
+
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        onSearch();
+    }
+
+
+    public void mousePressed(MouseEvent e) {
+        if (e.isPopupTrigger()) showPopup(e);
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        if (e.isPopupTrigger()) showPopup(e);
+    }
+
+    private void showPopup(MouseEvent e) {
+        int row = getTable().rowAtPoint(e.getPoint());
+        if (row >= 0 && row < getTable().getRowCount()) {
+            getTable().setRowSelectionInterval(row, row);
+        } else {
+            getTable().clearSelection();
+        }
+        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    private void addRow(ActionEvent actionEvent) {
+        JFrame frame = new JFrame("Tambahkan Siswa");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 420);
+        frame.setLocationRelativeTo(null);
+        frame.add(showAddRowForm(frame));
+        frame.setVisible(true);
+    }
+
+    private void saveRow(ActionEvent event) {
+        int selectedRow = getTable().getSelectedRow();
+        if (selectedRow == -1) {
+            return;
+        }
+        int code = JOptionPane.showConfirmDialog(getMainPanel(), "Yakin ingin menyimpan baris ini?", UIManager.getString("OptionPane.titleText"), JOptionPane.YES_NO_OPTION);
+        if (code == JOptionPane.YES_OPTION) {
+            List<Object> params = new ArrayList<>();
+            for (int i = 0; i < getHeaderColumns().length; i++) {
+                params.add(model.getValueAt(selectedRow, i));
+            }
+            repository.save(params).onSuccess(v -> {
+                fetchData();
+            }).onFailure(e -> {
+                log.error("Failed to save data", e);
+                JOptionPane.showMessageDialog(getMainPanel(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            });
+        }
+    }
+
+    private void deleteRow(ActionEvent event) {
+        int selectedRow = getTable().getSelectedRow();
+        if (selectedRow == -1) {
+            return;
+        }
+        int konfirmasi = JOptionPane.showConfirmDialog(getMainPanel(), "Yakin ingin hapus baris ini?");
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            Object id = model.getValueAt(selectedRow, 0); // dynamic using object
+            repository.delete(id).onSuccess(v -> {
+                fetchData();
+            }).onFailure(e -> {
+                log.error("Failed to delete data", e);
+                JOptionPane.showMessageDialog(getMainPanel(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            });
+        }
+    }
+
+}

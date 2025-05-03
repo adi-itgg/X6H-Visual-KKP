@@ -25,7 +25,7 @@ public class Menu extends JPanel implements LayoutManager {
 //            {"~COMPONENT~"},
 //            {"Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"},
 //            {"Forms", "Basic Elements", "Advanced Elements", "Editors", "Wizard"},
-//            {"~OTHER~"},
+            {"~Lainnya~"},
 //            {"Charts", "Apex", "Flot", "Peity", "Sparkline"},
 //            {"Icons", "Feather Icons", "Flag Icons", "Mdi Icons"},
 //            {"Special Pages", "Blank page", "Faq", "Invoice", "Profile", "Pricing", "Timeline"},
