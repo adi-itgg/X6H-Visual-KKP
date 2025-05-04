@@ -6,7 +6,6 @@ import io.aitech.pv.form.content.BaseMasterFormContent;
 import io.aitech.pv.repository.TeacherRepository;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MasterTeacherForm extends BaseMasterFormContent<TeacherRepository> {
 
@@ -24,7 +23,7 @@ public class MasterTeacherForm extends BaseMasterFormContent<TeacherRepository> 
 
     @Override
     protected String[] getHeaderColumns() {
-        return new String[]{"Id", "NIP", "Nama", "Jenis Kelamin", "Mengajar", "Nomor Hp", "Alamat"};
+        return new String[]{"Id", "NIP", "Nama", "Jenis Kelamin", "Pendidikan", "Nomor Hp", "Alamat"};
     }
 
     @Override

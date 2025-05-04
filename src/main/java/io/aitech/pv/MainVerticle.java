@@ -62,7 +62,7 @@ public class MainVerticle extends AbstractVerticle {
 
 
         // setup database
-        log.info("Connecting to database... host: {}, port: {}, database: {}, user: {}", config.postgres().host(), config.postgres().port(), config.postgres().database(), config.postgres().user());
+        log.info("Connecting to database... host: {}, port: {}, database: {}, user: {}", config.mysql().host(), config.mysql().port(), config.mysql().database(), config.mysql().user());
         // Postgres
         /*final PgConnectOptions connectOptions = new PgConnectOptions()
                 .setPort(config.postgres().port())
