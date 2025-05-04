@@ -1,11 +1,11 @@
 package io.aitech.pv.form.content.student;
 
 import io.aitech.pv.MainFrame;
+import io.aitech.pv.form.BaseForm;
 import io.aitech.pv.form.content.BaseMasterFormContent;
 import io.aitech.pv.repository.StudentRepository;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MasterStudentForm extends BaseMasterFormContent<StudentRepository> {
 
@@ -14,12 +14,8 @@ public class MasterStudentForm extends BaseMasterFormContent<StudentRepository> 
     private JButton tambahButton;
     private JTable mTable;
 
-    private final StudentRepository studentRepository;
-
-
     public MasterStudentForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.studentRepository());
-        this.studentRepository = mainFrame.studentRepository();
         initialize();
     }
 
@@ -49,11 +45,11 @@ public class MasterStudentForm extends BaseMasterFormContent<StudentRepository> 
     }
 
     @Override
-    protected Component showAddRowForm(JFrame frame) {
-        return new AddStudentForm(studentRepository, () -> {
+    protected BaseForm showAddRowForm(JFrame frame) {
+        return new AddStudentForm(repository, () -> {
             frame.dispose();
             fetchData();
-        }).getMainPanel();
+        });
     }
 
 

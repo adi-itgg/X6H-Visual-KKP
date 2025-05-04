@@ -1,6 +1,6 @@
 package io.aitech.pv.form.content.student;
 
-import io.aitech.pv.MainFrame;
+import io.aitech.pv.form.BaseForm;
 import io.aitech.pv.repository.StudentRepository;
 import io.vertx.sqlclient.Row;
 import net.miginfocom.swing.MigLayout;
@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
-public class AddStudentForm implements ActionListener {
+public class AddStudentForm implements BaseForm, ActionListener {
 
     private final Logger log = LoggerFactory.getLogger(AddStudentForm.class);
 
@@ -60,6 +60,7 @@ public class AddStudentForm implements ActionListener {
         fetchParents();
     }
 
+    @Override
     public JPanel getMainPanel() {
         return mp;
     }
@@ -89,41 +90,37 @@ public class AddStudentForm implements ActionListener {
         });
     }
 
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(mp, message);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (nameTxt.getText().isBlank()) {
-            showError("Nama tidak boleh kosong");
+            showWarningDialog("Nama tidak boleh kosong");
             return;
         }
         if (bornPlaceTxt.getText().isBlank()) {
-            showError("Tempat lahir tidak boleh kosong");
+            showWarningDialog("Tempat lahir tidak boleh kosong");
             return;
         }
         if (addressRichTxt.getText().isBlank()) {
-            showError("Alamat tidak boleh kosong");
+            showWarningDialog("Alamat tidak boleh kosong");
             return;
         }
         Parent parent = (Parent) parentComboBox.getSelectedItem();
         if (parent == null) {
-            showError("Orang tua tidak boleh kosong");
+            showWarningDialog("Orang tua tidak boleh kosong");
             return;
         }
         LocalDate bornDate = datePicker.getSelectedDate();
         if (bornDate == null) {
-            showError("Tanggal lahir tidak boleh kosong");
+            showWarningDialog("Tanggal lahir tidak boleh kosong");
             return;
         }
         char gender = lakiLakiRadioButton.isSelected() ? 'L' : 'P';
         studentRepository.addStudent(nameTxt.getText(), gender, bornDate, bornPlaceTxt.getText(), addressRichTxt.getText(), parent.id).onSuccess(v -> {
-            JOptionPane.showMessageDialog(mp, "Siswa berhasil ditambahkan");
+            showInformationDialog("Siswa berhasil ditambahkan");
             updateTable.run();
         }).onFailure(e1 -> {
             log.error("Failed to add student", e1);
-            showError(e1.getMessage());
+            showErrorDialog(e1.getMessage());
         });
     }
 

@@ -1,5 +1,6 @@
 package io.aitech.pv.form.content.parent;
 
+import io.aitech.pv.form.BaseForm;
 import io.aitech.pv.repository.ParentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddParentForm implements ActionListener {
+public class AddParentForm implements BaseForm, ActionListener {
 
     private final Logger log = LoggerFactory.getLogger(AddParentForm.class);
 
@@ -33,31 +34,27 @@ public class AddParentForm implements ActionListener {
         return mp;
     }
 
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(mp, message);
-    }
-
 
     @Override
     public void actionPerformed(ActionEvent event) {
         if (nameTxt.getText().isBlank()) {
-            showError("Nama tidak boleh kosong");
+            showWarningDialog("Nama tidak boleh kosong");
             return;
         }
         if (jobTxt.getText().isBlank()) {
-            showError("Pekerjaan tidak boleh kosong");
+            showWarningDialog("Pekerjaan tidak boleh kosong");
             return;
         }
         if (addressRichTxt.getText().isBlank()) {
-            showError("Alamat tidak boleh kosong");
+            showWarningDialog("Alamat tidak boleh kosong");
             return;
         }
         if (nikTxt.getText().isBlank()) {
-            showError("NIK tidak boleh kosong");
+            showWarningDialog("NIK tidak boleh kosong");
             return;
         }
         if (phoneNumberTxt.getText().isBlank()) {
-            showError("Nomor telepon tidak boleh kosong");
+            showWarningDialog("Nomor telepon tidak boleh kosong");
             return;
         }
 
@@ -68,11 +65,11 @@ public class AddParentForm implements ActionListener {
         String address = addressRichTxt.getText();
 
         parentRepository.addParent(nik, name, job, address, phoneNumber).onSuccess(v -> {
-            JOptionPane.showMessageDialog(mp, "Orang tua berhasil ditambahkan");
+            showInformationDialog("Orang tua berhasil ditambahkan");
             updateTable.run();
         }).onFailure(e -> {
             log.error("Failed to add parent", e);
-            showError(e.getMessage());
+            showErrorDialog(e.getMessage());
         });
 
     }

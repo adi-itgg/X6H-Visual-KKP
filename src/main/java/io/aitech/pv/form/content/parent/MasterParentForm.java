@@ -1,11 +1,11 @@
 package io.aitech.pv.form.content.parent;
 
 import io.aitech.pv.MainFrame;
+import io.aitech.pv.form.BaseForm;
 import io.aitech.pv.form.content.BaseMasterFormContent;
 import io.aitech.pv.repository.ParentRepository;
 
 import javax.swing.*;
-import java.awt.*;
 
 public final class MasterParentForm extends BaseMasterFormContent<ParentRepository> {
 
@@ -14,11 +14,8 @@ public final class MasterParentForm extends BaseMasterFormContent<ParentReposito
     private JButton tambahButton;
     private JTable mTable;
 
-    private final ParentRepository parentRepository;
-
     public MasterParentForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.parentRepository());
-        this.parentRepository = mainFrame.parentRepository();
         initialize();
     }
 
@@ -48,12 +45,12 @@ public final class MasterParentForm extends BaseMasterFormContent<ParentReposito
     }
 
     @Override
-    protected Component showAddRowForm(JFrame frame) {
+    protected BaseForm showAddRowForm(JFrame frame) {
         frame.setSize(600, 420);
-        return new AddParentForm(parentRepository, () -> {
+        return new AddParentForm(repository, () -> {
             fetchData();
             frame.dispose();
-        }).getMainPanel();
+        });
     }
 
 }

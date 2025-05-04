@@ -1,6 +1,7 @@
 package io.aitech.pv.form.content.teacher;
 
 import io.aitech.pv.MainFrame;
+import io.aitech.pv.form.BaseForm;
 import io.aitech.pv.form.content.BaseMasterFormContent;
 import io.aitech.pv.repository.TeacherRepository;
 
@@ -42,12 +43,12 @@ public class MasterTeacherForm extends BaseMasterFormContent<TeacherRepository> 
     }
 
     @Override
-    protected Component showAddRowForm(JFrame frame) {
+    protected BaseForm showAddRowForm(JFrame frame) {
         frame.setSize(660, 420);
         return new AddTeacherForm(repository, () -> {
             frame.dispose();
             fetchData();
-        }).getMainPanel();
+        });
     }
 
     @Override

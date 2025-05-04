@@ -1,7 +1,6 @@
 package io.aitech.pv.form.content.teacher;
 
 import io.aitech.pv.form.BaseForm;
-import io.aitech.pv.repository.BaseMasterRepository;
 import io.aitech.pv.repository.TeacherRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,33 +39,33 @@ public class AddTeacherForm implements BaseForm, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (nipTxt.getText().isBlank()) {
-            showError("NIP tidak boleh kosong");
+            showErrorDialog("NIP tidak boleh kosong");
             return;
         }
         if (nameTxt.getText().isBlank()) {
-            showError("Nama tidak boleh kosong");
+            showErrorDialog("Nama tidak boleh kosong");
             return;
         }
         if (eduTxt.getText().isBlank()) {
-            showError("Pendidikan tidak boleh kosong");
+            showErrorDialog("Pendidikan tidak boleh kosong");
             return;
         }
         if (phoneNumberTxt.getText().isBlank()) {
-            showError("Nomor telepon tidak boleh kosong");
+            showErrorDialog("Nomor telepon tidak boleh kosong");
             return;
         }
         if (addressRichTxt.getText().isBlank()) {
-            showError("Alamat tidak boleh kosong");
+            showErrorDialog("Alamat tidak boleh kosong");
             return;
         }
 
         char gender = lakiLakiRadioButton.isSelected() ? 'L' : 'P';
         teacherRepository.addTeacher(nipTxt.getText(), nameTxt.getText(), gender, eduTxt.getText(), phoneNumberTxt.getText(), addressRichTxt.getText()).onSuccess(v -> {
-            JOptionPane.showMessageDialog(mp, "Guru berhasil ditambahkan");
+            showInformationDialog("Guru berhasil ditambahkan");
             updateTable.run();
         }).onFailure(e1 -> {
             log.error("Failed to add teacher", e1);
-            showError("Guru gagal ditambahkan");
+            showErrorDialog("Guru gagal ditambahkan");
         });
     }
 

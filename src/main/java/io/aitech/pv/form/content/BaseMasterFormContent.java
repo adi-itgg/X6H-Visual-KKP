@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -73,7 +72,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
 
     protected abstract JTable getTable();
 
-    protected abstract Component showAddRowForm(JFrame frame);
+    protected abstract BaseForm showAddRowForm(JFrame frame);
 
     protected void fetchData() {
         String keyword = getCariText().getText();
@@ -88,7 +87,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
             }
         }).onFailure(e -> {
             log.error("Failed to fetch data", e);
-            JOptionPane.showMessageDialog(getMainPanel(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog("Failed to fetch data - " + e.getMessage());
         });
     }
 
@@ -128,9 +127,9 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
     private void addRow(ActionEvent actionEvent) {
         JFrame frame = new JFrame("Tambahkan Data");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 420);
+        frame.setSize(660, 420);
         frame.setLocationRelativeTo(null);
-        frame.add(showAddRowForm(frame));
+        frame.add(showAddRowForm(frame).getMainPanel());
         frame.setVisible(true);
     }
 
@@ -149,7 +148,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
                 fetchData();
             }).onFailure(e -> {
                 log.error("Failed to save data", e);
-                JOptionPane.showMessageDialog(getMainPanel(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                showErrorDialog("Failed to save data - " + e.getMessage());
             });
         }
     }
@@ -166,7 +165,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
                 fetchData();
             }).onFailure(e -> {
                 log.error("Failed to delete data", e);
-                JOptionPane.showMessageDialog(getMainPanel(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                showErrorDialog("Failed to delete data - " + e.getMessage());
             });
         }
     }
