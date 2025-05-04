@@ -17,11 +17,15 @@ public class Menu extends JPanel implements LayoutManager {
 
     private final String[][] menuItems = {
             {"~MAIN~"},
-            {"Dashboard"},
+            {"Dashboard"}, // 0
             {"~Master Data~"},
-            {"Orang Tua/Wali"},
-            {"Siswa"},
+            {"Orang Tua/Wali"}, // 1
+            {"Siswa"}, // 2
+            {"Guru"}, // 3
+            {"Kurikulum"},
             {"Kelas"},
+            {"~Pembayaran~"},
+            {"Pembayaran"},
 //            {"~COMPONENT~"},
 //            {"Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"},
 //            {"Forms", "Basic Elements", "Advanced Elements", "Editors", "Wizard"},

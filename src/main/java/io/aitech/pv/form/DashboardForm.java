@@ -7,6 +7,7 @@ import io.aitech.pv.MainFrame;
 import io.aitech.pv.form.content.FormDashboard;
 import io.aitech.pv.form.content.parent.MasterParentForm;
 import io.aitech.pv.form.content.student.MasterStudentForm;
+import io.aitech.pv.form.content.teacher.MasterTeacherForm;
 import io.aitech.pv.form.menu.Menu;
 import io.aitech.pv.form.menu.MenuAction;
 
@@ -67,6 +68,8 @@ public class DashboardForm extends JLayeredPane implements LayoutManager {
                 showForm(new MasterParentForm(mainFrame));
             } else if (index == 2) {
                 showForm(new MasterStudentForm(mainFrame));
+            } else if (index == 3) {
+                showForm(new MasterTeacherForm(mainFrame));
             } else if (index == 9) {
 //                logout();
             } else {
@@ -94,6 +97,7 @@ public class DashboardForm extends JLayeredPane implements LayoutManager {
     public void showForm(BaseForm form) {
         showForm(form.getMainPanel());
     }
+
     public void showForm(Component component) {
         panelBody.removeAll();
         panelBody.add(component);
