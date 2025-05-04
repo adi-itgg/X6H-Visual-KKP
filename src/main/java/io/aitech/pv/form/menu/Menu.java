@@ -22,10 +22,11 @@ public class Menu extends JPanel implements LayoutManager {
             {"Orang Tua/Wali"}, // 1
             {"Siswa"}, // 2
             {"Guru"}, // 3
-            {"Kurikulum"},
-            {"Kelas"},
+            {"Kurikulum"}, // 4
+            {"Kelas"}, // 5
+            {"Tagihan"}, // 6
             {"~Pembayaran~"},
-            {"Pembayaran"},
+            {"Pembayaran"}, // 7
 //            {"~COMPONENT~"},
 //            {"Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"},
 //            {"Forms", "Basic Elements", "Advanced Elements", "Editors", "Wizard"},

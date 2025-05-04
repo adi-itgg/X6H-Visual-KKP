@@ -32,6 +32,7 @@ public class MainFrame extends JFrame {
     private final ParentRepository parentRepository;
     private final TeacherRepository teacherRepository;
     private final CurriculumRepository curriculumRepository;
+    private final InvoiceRepository invoiceRepository;
 
     public MainFrame(Vertx vertx, Context context, Pool pool, AppConfiguration config) {
         this.vertx = vertx;
@@ -44,6 +45,7 @@ public class MainFrame extends JFrame {
         this.parentRepository = new ParentRepositoryImpl(pool);
         this.teacherRepository = new TeacherRepositoryImpl(pool);
         this.curriculumRepository = new CurriculumRepositoryImpl(pool);
+        this.invoiceRepository = new InvoiceRepositoryImpl(pool);
 
 
         // setup UI
@@ -107,5 +109,9 @@ public class MainFrame extends JFrame {
 
     public CurriculumRepository curriculumRepository() {
         return curriculumRepository;
+    }
+
+    public InvoiceRepository invoiceRepository() {
+        return invoiceRepository;
     }
 }

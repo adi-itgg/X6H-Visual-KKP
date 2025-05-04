@@ -91,14 +91,17 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
                 Object[] data = new Object[row.size()];
                 for (int i = 0; i < row.size(); i++) {
                     Object value = row.getValue(i);
+                    data[i] = row.getValue(i);
                     if (value instanceof Duration duration) {
                         long hour = duration.toHours();
                         long minutes = duration.minusHours(hour).toMinutes();
 
                         data[i] = String.format("%02d:%02d", hour, minutes);
-                        continue;
                     }
-                    data[i] = row.getValue(i);
+                    Object newValue = mapDisplayColumnValue(i, value);
+                    if (newValue != null) {
+                        data[i] = newValue;
+                    }
                 }
                 model.addRow(data);
             }
@@ -106,6 +109,10 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
             log.error("Failed to fetch data", e);
             showErrorDialog("Failed to fetch data - " + e.getMessage());
         });
+    }
+
+    protected Object mapDisplayColumnValue(int index, Object value) {
+        return value;
     }
 
     private void onSearch() {
@@ -159,7 +166,9 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
         if (code == JOptionPane.YES_OPTION) {
             List<Object> params = new ArrayList<>();
             for (int i = 0; i < getHeaderColumns().length; i++) {
-                params.add(model.getValueAt(selectedRow, i));
+                Object value = model.getValueAt(selectedRow, i);
+                value = mapColumnValue(i, value);
+                params.add(value);
             }
             repository.save(params).onSuccess(v -> {
                 fetchData();
@@ -168,6 +177,10 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
                 showErrorDialog("Failed to save data - " + e.getMessage());
             });
         }
+    }
+
+    protected Object mapColumnValue(int index, Object value) {
+        return value;
     }
 
     protected void deleteRow(ActionEvent event) {
