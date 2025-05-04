@@ -6,6 +6,7 @@ import com.formdev.flatlaf.util.UIScale;
 import io.aitech.pv.MainFrame;
 import io.aitech.pv.form.BaseForm;
 import io.aitech.pv.form.content.FormDashboard;
+import io.aitech.pv.form.content.clazz.MasterClassForm;
 import io.aitech.pv.form.content.curriculum.MasterCurriculumForm;
 import io.aitech.pv.form.content.invoice.MasterInvoiceForm;
 import io.aitech.pv.form.content.parent.MasterParentForm;
@@ -75,6 +76,8 @@ public class MainForm extends JLayeredPane implements LayoutManager {
                 showForm(new MasterTeacherForm(mainFrame));
             } else if (index == 4) {
                 showForm(new MasterCurriculumForm(mainFrame));
+            } else if (index == 5) {
+                showForm(new MasterClassForm(mainFrame));
             } else if (index == 6) {
                 showForm(new MasterInvoiceForm(mainFrame));
             } else if (index == 9) {

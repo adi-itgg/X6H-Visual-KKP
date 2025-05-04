@@ -98,7 +98,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
 
                         data[i] = String.format("%02d:%02d", hour, minutes);
                     }
-                    Object newValue = mapDisplayColumnValue(i, value);
+                    Object newValue = mapDisplayColumnValue(i, data[i]);
                     if (newValue != null) {
                         data[i] = newValue;
                     }
