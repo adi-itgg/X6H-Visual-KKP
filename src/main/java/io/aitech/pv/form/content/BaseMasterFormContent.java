@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -39,6 +40,13 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
         // initialize Table
         this.model = new DefaultTableModel(getHeaderColumns(), 0);
         getTable().setModel(model);
+        // center align
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < getTable().getColumnCount(); i++) {
+            getTable().getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         // initialize Context Menu
         this.popupMenu = new JPopupMenu();
