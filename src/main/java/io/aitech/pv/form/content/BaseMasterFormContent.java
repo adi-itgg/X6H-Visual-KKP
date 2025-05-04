@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -89,6 +90,14 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
             for (Row row : v) {
                 Object[] data = new Object[row.size()];
                 for (int i = 0; i < row.size(); i++) {
+                    Object value = row.getValue(i);
+                    if (value instanceof Duration duration) {
+                        long hour = duration.toHours();
+                        long minutes = duration.minusHours(hour).toMinutes();
+
+                        data[i] = String.format("%02d:%02d", hour, minutes);
+                        continue;
+                    }
                     data[i] = row.getValue(i);
                 }
                 model.addRow(data);
@@ -122,7 +131,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
         if (e.isPopupTrigger()) showPopup(e);
     }
 
-    private void showPopup(MouseEvent e) {
+    protected void showPopup(MouseEvent e) {
         int row = getTable().rowAtPoint(e.getPoint());
         if (row >= 0 && row < getTable().getRowCount()) {
             getTable().setRowSelectionInterval(row, row);
@@ -132,7 +141,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
         popupMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
-    private void addRow(ActionEvent actionEvent) {
+    protected void addRow(ActionEvent actionEvent) {
         JFrame frame = new JFrame("Tambahkan Data");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(660, 420);
@@ -141,7 +150,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
         frame.setVisible(true);
     }
 
-    private void saveRow(ActionEvent event) {
+    protected void saveRow(ActionEvent event) {
         int selectedRow = getTable().getSelectedRow();
         if (selectedRow == -1) {
             return;
@@ -161,7 +170,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
         }
     }
 
-    private void deleteRow(ActionEvent event) {
+    protected void deleteRow(ActionEvent event) {
         int selectedRow = getTable().getSelectedRow();
         if (selectedRow == -1) {
             return;

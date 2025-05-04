@@ -4,10 +4,7 @@ import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import io.aitech.pv.config.AppConfiguration;
 import io.aitech.pv.form.login.LoginForm;
 import io.aitech.pv.repository.*;
-import io.aitech.pv.repository.impl.LoginRepositoryImpl;
-import io.aitech.pv.repository.impl.ParentRepositoryImpl;
-import io.aitech.pv.repository.impl.StudentRepositoryImpl;
-import io.aitech.pv.repository.impl.TeacherRepositoryImpl;
+import io.aitech.pv.repository.impl.*;
 import io.aitech.pv.util.URunnable;
 import io.vertx.core.Context;
 import io.vertx.core.Future;
@@ -27,7 +24,6 @@ public class MainFrame extends JFrame {
 
     private final Vertx vertx;
     private final Context context;
-    private final Pool pool;
     private final AppConfiguration config;
 
     // repositories
@@ -35,11 +31,11 @@ public class MainFrame extends JFrame {
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
     private final TeacherRepository teacherRepository;
+    private final CurriculumRepository curriculumRepository;
 
     public MainFrame(Vertx vertx, Context context, Pool pool, AppConfiguration config) {
         this.vertx = vertx;
         this.context = context;
-        this.pool = pool;
         this.config = config;
 
         // initialize repositories
@@ -47,6 +43,7 @@ public class MainFrame extends JFrame {
         this.studentRepository = new StudentRepositoryImpl(pool);
         this.parentRepository = new ParentRepositoryImpl(pool);
         this.teacherRepository = new TeacherRepositoryImpl(pool);
+        this.curriculumRepository = new CurriculumRepositoryImpl(pool);
 
 
         // setup UI
@@ -106,5 +103,9 @@ public class MainFrame extends JFrame {
 
     public TeacherRepository teacherRepository() {
         return teacherRepository;
+    }
+
+    public CurriculumRepository curriculumRepository() {
+        return curriculumRepository;
     }
 }
