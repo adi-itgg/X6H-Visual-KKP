@@ -1,5 +1,6 @@
-package io.aitech.pv.repository;
+package io.aitech.pv.repository.impl;
 
+import io.aitech.pv.repository.LoginRepository;
 import io.vertx.core.Future;
 import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.Row;

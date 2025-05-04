@@ -1,10 +1,11 @@
-package io.aitech.pv.form;
+package io.aitech.pv.form.login;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import io.aitech.pv.CustomFocusTraversalPolicy;
 import io.aitech.pv.MainFrame;
+import io.aitech.pv.form.mainform.MainForm;
 import io.aitech.pv.model.ActionCommand;
 import io.vertx.sqlclient.Row;
 import net.miginfocom.swing.MigLayout;
@@ -190,12 +191,12 @@ public class LoginForm extends JPanel implements ActionListener {
         if (verifyer.verify(txtPassword.getPassword(), password).verified) {
             log.info("Login success");
 
-            DashboardForm dashboardForm = new DashboardForm(mainFrame);
-            dashboardForm.setSelectedMenu(0, 0);
-            dashboardForm.hideMenu();
+            MainForm mainForm = new MainForm(mainFrame);
+            mainForm.setSelectedMenu(0, 0);
+            mainForm.hideMenu();
 
             mainFrame.setSize(new Dimension(1366, 768));
-            mainFrame.setContainer(dashboardForm);
+            mainFrame.setContainer(mainForm);
             return;
         }
 

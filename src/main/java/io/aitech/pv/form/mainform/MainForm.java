@@ -1,9 +1,10 @@
-package io.aitech.pv.form;
+package io.aitech.pv.form.mainform;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
 import io.aitech.pv.MainFrame;
+import io.aitech.pv.form.BaseForm;
 import io.aitech.pv.form.content.FormDashboard;
 import io.aitech.pv.form.content.parent.MasterParentForm;
 import io.aitech.pv.form.content.student.MasterStudentForm;
@@ -16,14 +17,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class DashboardForm extends JLayeredPane implements LayoutManager {
+public class MainForm extends JLayeredPane implements LayoutManager {
 
     private final MainFrame mainFrame;
     private final Menu menu;
     private final JPanel panelBody;
     private JButton menuButton;
 
-    public DashboardForm(MainFrame mainFrame) {
+    public MainForm(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
 
         setBorder(new EmptyBorder(5, 5, 5, 5));
