@@ -91,7 +91,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
                 Object[] data = new Object[row.size()];
                 for (int i = 0; i < row.size(); i++) {
                     Object value = row.getValue(i);
-                    data[i] = row.getValue(i);
+                    data[i] = value;
                     if (value instanceof Duration duration) {
                         long hour = duration.toHours();
                         long minutes = duration.minusHours(hour).toMinutes();
