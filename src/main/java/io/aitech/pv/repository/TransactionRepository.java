@@ -5,6 +5,7 @@ import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.SqlConnection;
 
+import java.awt.*;
 import java.util.List;
 import java.util.function.Function;
 
@@ -20,7 +21,9 @@ public interface TransactionRepository {
 
     Future<Long> findParentIdByStudentId(long studentId);
 
-    Future<Long> addBillStudentTx(SqlConnection connection, long studentId, Long parentId, long totalAmount);
+    Future<Void> addBillStudentTx(SqlConnection connection, long studentId, Long parentId, long totalAmount);
 
     Future<Void> addBillDetailStudentTx(SqlConnection connection, Long id, List<Long> invoiceIds);
+
+    Future<Long> getIdBillStudent(SqlConnection connection);
 }

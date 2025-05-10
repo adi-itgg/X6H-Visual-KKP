@@ -50,7 +50,12 @@ public class TransactionForm extends MouseWithKeyAdapter implements BaseForm, Mo
 
         // initialize Table
         String[] headerColumns = {"Id", "Nama Siswa", "Orang Tua/Wali", "Total", "Tanggal Transaksi"};
-        this.model = new DefaultTableModel(headerColumns, 0);
+        this.model = new DefaultTableModel(headerColumns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         mTable.setModel(model);
         // center align
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

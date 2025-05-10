@@ -93,8 +93,10 @@ public class AddTrxForm implements BaseForm, ActionListener {
         long finalTotalAmount = totalAmount;
         transactionRepository.findParentIdByStudentId(studentId).compose(parentId -> {
             return transactionRepository.transaction(connection -> {
-                return transactionRepository.addBillStudentTx(connection, studentId, parentId, finalTotalAmount).compose(id -> {
-                    return transactionRepository.addBillDetailStudentTx(connection, id, invoiceIds).mapEmpty();
+                return transactionRepository.addBillStudentTx(connection, studentId, parentId, finalTotalAmount).compose(v -> {
+                    return transactionRepository.getIdBillStudent(connection).compose(id -> {
+                        return transactionRepository.addBillDetailStudentTx(connection, id, invoiceIds).mapEmpty();
+                    });
                 });
             });
         }).onSuccess(v -> {

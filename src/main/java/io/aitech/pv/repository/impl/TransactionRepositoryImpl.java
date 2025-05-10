@@ -25,6 +25,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                     FROM t_bill_student b
                     JOIN m_student s ON b.student_id = s.id
                     JOIN m_parent p ON b.parent_id = p.id
+                    ORDER BY b.created_at DESC
                     """).execute();
         }
 
@@ -35,6 +36,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                 JOIN m_student s ON b.student_id = s.id
                 JOIN m_parent p ON b.parent_id = p.id
                 WHERE s.name like ?
+                ORDER BY b.created_at DESC
                 """).execute(Tuple.of(keyword));
     }
 
@@ -69,7 +71,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public Future<Long> addBillStudentTx(SqlConnection connection, long studentId, Long parentId, long totalAmount) {
+    public Future<Void> addBillStudentTx(SqlConnection connection, long studentId, Long parentId, long totalAmount) {
         return Objects.requireNonNullElse(connection, pool).preparedQuery("""
                         INSERT INTO t_bill_student (student_id, parent_id, total_amount)
                         VALUES (?, ?, ?)
@@ -84,16 +86,26 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     public Future<Void> addBillDetailStudentTx(SqlConnection connection, Long id, List<Long> invoiceIds) {
         List<Future<Object>> futures = invoiceIds.stream().map(invoiceId -> {
             return Objects.requireNonNullElse(connection, pool).preparedQuery("""
-                    INSERT INTO t_bill_student_detail (bill_student_id, invoice_id, name, amount)
-                    SELECT ?, id, name, amount
-                    FROM m_invoice
-                    WHERE id = ?
-                    """).execute(Tuple.of(id, invoiceId)).map(rows -> {
-                assert rows.rowCount() > 0;
-                return null;
+                    SELECT id, name, amount FROM m_invoice WHERE id = ? LIMIT 1
+                    """).execute(Tuple.of(invoiceId)).compose(rows -> {
+                Row row = rows.iterator().next();
+                return Objects.requireNonNullElse(connection, pool).preparedQuery("""
+                        INSERT INTO t_bill_student_detail (bill_student_id, invoice_id, name, amount)
+                        VALUES (?, ?, ?, ?)
+                        """).execute(Tuple.of(id, row.getValue(0), row.getValue(1), row.getValue(2))).map(r -> {
+                    assert r.rowCount() > 0;
+                    return null;
+                });
             });
+
         }).toList();
         return Future.all(futures).mapEmpty();
+    }
+
+    @Override
+    public Future<Long> getIdBillStudent(SqlConnection connection) {
+        return Objects.requireNonNullElse(connection, pool).preparedQuery("SELECT last_insert_id()")
+                .execute().map(rows -> rows.iterator().next().getLong(0));
     }
 
 }
