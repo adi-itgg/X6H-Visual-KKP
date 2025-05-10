@@ -26,4 +26,6 @@ public interface TransactionRepository {
     Future<Void> addBillDetailStudentTx(SqlConnection connection, Long id, List<Long> invoiceIds);
 
     Future<Long> getIdBillStudent(SqlConnection connection);
+
+    Future<RowSet<Row>> fetchDetailsAll(Long transactionId);
 }

@@ -2,6 +2,7 @@ package io.aitech.pv.form.content.transaction;
 
 import io.aitech.pv.MainFrame;
 import io.aitech.pv.form.BaseForm;
+import io.aitech.pv.form.content.transaction.popup.TransactionDetailForm;
 import io.aitech.pv.misc.MouseWithKeyAdapter;
 import io.aitech.pv.repository.TransactionRepository;
 import io.vertx.core.Timer;
@@ -162,4 +163,17 @@ public class TransactionForm extends MouseWithKeyAdapter implements BaseForm, Mo
         frame.setVisible(true);
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() >= 2 && mTable.getSelectedRow() != -1) {
+            JFrame frame = new JFrame("Detail Pembayaran");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(660, 420);
+            frame.setLocationRelativeTo(null);
+            int row = mTable.getSelectedRow();
+            long id = ((Number) mTable.getValueAt(row, 0)).longValue();
+            frame.add(new TransactionDetailForm(transactionRepository, id).getMainPanel());
+            frame.setVisible(true);
+        }
+    }
 }

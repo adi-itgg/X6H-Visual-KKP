@@ -108,4 +108,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                 .execute().map(rows -> rows.iterator().next().getLong(0));
     }
 
+    @Override
+    public Future<RowSet<Row>> fetchDetailsAll(Long transactionId) {
+        return pool.preparedQuery("""
+                        SELECT t.id, t.name, t.amount, t.created_date FROM t_bill_student_detail t
+                        WHERE t.bill_student_id = ?
+                        """)
+                .execute(Tuple.of(transactionId));
+    }
+
 }
