@@ -17,7 +17,6 @@ public final class MasterCurriculumForm extends BaseMasterFormContent<Curriculum
 
     public MasterCurriculumForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.curriculumRepository());
-        initialize();
     }
 
 
@@ -48,6 +47,7 @@ public final class MasterCurriculumForm extends BaseMasterFormContent<Curriculum
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

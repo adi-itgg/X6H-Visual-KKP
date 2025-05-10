@@ -29,12 +29,14 @@ public class AddStudentForm implements BaseForm, ActionListener {
 
     private final StudentRepository studentRepository;
     private final Runnable updateTable;
-    private final DatePicker datePicker;
+    private DatePicker datePicker;
 
     public AddStudentForm(StudentRepository studentRepository, Runnable updateTable) {
         this.studentRepository = studentRepository;
         this.updateTable = updateTable;
+    }
 
+    private void initialize() {
         lakiLakiRadioButton.addActionListener(e -> {
             if (lakiLakiRadioButton.isSelected()) {
                 perempuanRadioButton.setSelected(false);
@@ -62,6 +64,7 @@ public class AddStudentForm implements BaseForm, ActionListener {
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

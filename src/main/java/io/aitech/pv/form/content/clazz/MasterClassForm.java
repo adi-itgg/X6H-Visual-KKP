@@ -17,7 +17,6 @@ public class MasterClassForm extends BaseMasterFormContent<ClassRepository> {
 
     public MasterClassForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.classRepository());
-        initialize();
     }
 
     @Override
@@ -51,6 +50,7 @@ public class MasterClassForm extends BaseMasterFormContent<ClassRepository> {
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

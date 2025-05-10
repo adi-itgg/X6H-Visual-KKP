@@ -16,11 +16,11 @@ public class MasterStudentForm extends BaseMasterFormContent<StudentRepository> 
 
     public MasterStudentForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.studentRepository());
-        initialize();
     }
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

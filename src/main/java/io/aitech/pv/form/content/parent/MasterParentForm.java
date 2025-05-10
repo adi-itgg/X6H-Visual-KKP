@@ -16,11 +16,11 @@ public final class MasterParentForm extends BaseMasterFormContent<ParentReposito
 
     public MasterParentForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.parentRepository());
-        initialize();
     }
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

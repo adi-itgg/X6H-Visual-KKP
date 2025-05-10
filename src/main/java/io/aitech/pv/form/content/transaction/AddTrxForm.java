@@ -32,8 +32,9 @@ public class AddTrxForm implements BaseForm, ActionListener {
     public AddTrxForm(TransactionRepository transactionRepository, Runnable updateTable) {
         this.transactionRepository = transactionRepository;
         this.updateTable = updateTable;
+    }
 
-
+    private void initialize() {
         transactionRepository.fetchStudentItems().onSuccess(v -> {
             for (Row row : v) {
                 studentComboBox.addItem(new ComboBoxItem(row.getLong(0), row.getString(1)));
@@ -64,6 +65,7 @@ public class AddTrxForm implements BaseForm, ActionListener {
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

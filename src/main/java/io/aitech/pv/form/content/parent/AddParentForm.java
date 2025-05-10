@@ -27,10 +27,11 @@ public class AddParentForm implements BaseForm, ActionListener {
     public AddParentForm(ParentRepository parentRepository, Runnable updateTable) {
         this.parentRepository = parentRepository;
         this.updateTable = updateTable;
-        simpanButton.addActionListener(this);
     }
 
+    @Override
     public JPanel getMainPanel() {
+        simpanButton.addActionListener(this);
         return mp;
     }
 

@@ -35,7 +35,9 @@ public class AddClassForm implements BaseForm, ActionListener {
     public AddClassForm(ClassRepository classRepository, Runnable updateTable) {
         this.classRepository = classRepository;
         this.updateTable = updateTable;
+    }
 
+    private void initialize() {
         simpanButton.addActionListener(this);
 
         this.scheduleTimePicker = new TimePicker();
@@ -92,6 +94,7 @@ public class AddClassForm implements BaseForm, ActionListener {
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

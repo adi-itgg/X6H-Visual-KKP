@@ -28,11 +28,11 @@ public class AddTeacherForm implements BaseForm, ActionListener {
     public AddTeacherForm(TeacherRepository teacherRepository, Runnable updateTable) {
         this.teacherRepository = teacherRepository;
         this.updateTable = updateTable;
-        simpanButton.addActionListener(this);
     }
 
     @Override
     public JPanel getMainPanel() {
+        simpanButton.addActionListener(this);
         return mp;
     }
 

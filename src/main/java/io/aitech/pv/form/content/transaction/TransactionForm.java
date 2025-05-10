@@ -40,15 +40,17 @@ public class TransactionForm extends MouseWithKeyAdapter implements BaseForm, Mo
     private final Vertx vertx;
     private final TransactionRepository transactionRepository;
 
-    private final DefaultTableModel model;
-    private final JPopupMenu popupMenu;
+    private DefaultTableModel model;
+    private JPopupMenu popupMenu;
 
     private Timer searchDelayTimer;
 
     public TransactionForm(MainFrame mainFrame) {
         this.vertx = mainFrame.vertx();
         this.transactionRepository = mainFrame.transactionRepository();
+    }
 
+    public void initialize() {
         // initialize Table
         String[] headerColumns = {"Id", "Nama Siswa", "Orang Tua/Wali", "Total", "Tanggal Transaksi"};
         this.model = new DefaultTableModel(headerColumns, 0) {
@@ -86,6 +88,7 @@ public class TransactionForm extends MouseWithKeyAdapter implements BaseForm, Mo
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

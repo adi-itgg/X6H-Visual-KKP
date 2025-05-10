@@ -21,7 +21,6 @@ public class MasterInvoiceForm extends BaseMasterFormContent<InvoiceRepository> 
 
     public MasterInvoiceForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.invoiceRepository());
-        initialize();
     }
 
     @Override
@@ -51,6 +50,7 @@ public class MasterInvoiceForm extends BaseMasterFormContent<InvoiceRepository> 
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 

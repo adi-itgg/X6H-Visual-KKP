@@ -18,7 +18,6 @@ public class MasterTeacherForm extends BaseMasterFormContent<TeacherRepository> 
 
     public MasterTeacherForm(MainFrame mainFrame) {
         super(mainFrame.vertx(), mainFrame.teacherRepository());
-        initialize();
     }
 
     @Override
@@ -52,6 +51,7 @@ public class MasterTeacherForm extends BaseMasterFormContent<TeacherRepository> 
 
     @Override
     public JPanel getMainPanel() {
+        initialize();
         return mp;
     }
 }
