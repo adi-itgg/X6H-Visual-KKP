@@ -35,6 +35,7 @@ public class MainFrame extends JFrame {
     private final InvoiceRepository invoiceRepository;
     private final ClassRepository classRepository;
     private final TransactionRepository transactionRepository;
+    private final DashboardRepository dashboardRepository;
 
     public MainFrame(Vertx vertx, Context context, Pool pool, AppConfiguration config) {
         this.vertx = vertx;
@@ -50,6 +51,7 @@ public class MainFrame extends JFrame {
         this.invoiceRepository = new InvoiceRepositoryImpl(pool);
         this.classRepository = new ClassRepositoryImpl(pool);
         this.transactionRepository = new TransactionRepositoryImpl(pool);
+        this.dashboardRepository = new DashboardRepositoryImpl(pool);
 
 
         // setup UI
@@ -125,5 +127,9 @@ public class MainFrame extends JFrame {
 
     public TransactionRepository transactionRepository() {
         return transactionRepository;
+    }
+
+    public DashboardRepository dashboardRepository() {
+        return dashboardRepository;
     }
 }

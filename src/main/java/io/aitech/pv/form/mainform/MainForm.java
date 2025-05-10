@@ -5,9 +5,9 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
 import io.aitech.pv.MainFrame;
 import io.aitech.pv.form.BaseForm;
-import io.aitech.pv.form.content.FormDashboard;
 import io.aitech.pv.form.content.clazz.MasterClassForm;
 import io.aitech.pv.form.content.curriculum.MasterCurriculumForm;
+import io.aitech.pv.form.content.dashboard.DashboardForm;
 import io.aitech.pv.form.content.invoice.MasterInvoiceForm;
 import io.aitech.pv.form.content.parent.MasterParentForm;
 import io.aitech.pv.form.content.student.MasterStudentForm;
@@ -68,7 +68,7 @@ public class MainForm extends JLayeredPane implements LayoutManager {
     private void initMenuEvent() {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             if (index == 0) {
-                showForm(new FormDashboard());
+                showForm(new DashboardForm(mainFrame));
             } else if (index == 1) {
                 showForm(new MasterParentForm(mainFrame));
             } else if (index == 2) {
