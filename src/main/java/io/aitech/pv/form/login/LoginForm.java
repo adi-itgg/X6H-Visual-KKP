@@ -170,15 +170,13 @@ public class LoginForm extends JPanel implements ActionListener {
         btnSignIn.setEnabled(false);
 
         if (txtEmail.getText().isBlank()) {
-//            showInfo("Email tidak boleh kosong");
-//            return;
-            txtEmail.setText("adi@yopmail.com"); // for test TODO remove
+            showError("Email tidak boleh kosong");
+            return;
         }
 
         if (txtPassword.getPassword().length == 0) {
-//            showInfo("Kata sandi tidak boleh kosong");
-//            return;
-            txtPassword.setText("123qwe"); // for test TODO remove
+            showError("Kata sandi tidak boleh kosong");
+            return;
         }
 
         Row row = mainFrame.loginRepository().findUserByEmail(txtEmail.getText()).await();

@@ -6,10 +6,13 @@ package io.aitech.pv.form.content.dashboard;
 
 import io.aitech.pv.MainFrame;
 import io.aitech.pv.repository.DashboardRepository;
+import io.vertx.sqlclient.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -59,6 +62,25 @@ public class DashboardForm extends javax.swing.JPanel {
             String rp = currencyFormatter.format(c).split(",")[0].replace("Rp", "Rp ");
             card2.setData(new ModelCard("/icon/profit.png", "Uang", rp, "Jumlah uang yang telah dihasilkan"));
         }).onFailure(this::showErrorDialog);
+
+        dashboardRepository.fetchAll().onSuccess(v -> {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0); // clear table
+            for (Row row : v) {
+                Object[] data = new Object[row.size()];
+                for (int i = 0; i < row.size(); i++) {
+                    Object value = row.getValue(i);
+
+                    if (i == 5) { // total amount
+                        data[i] = currencyFormatter.format(value).split(",")[0].replace("Rp", "Rp ");
+                        continue;
+                    }
+
+                    data[i] = value;
+                }
+                model.addRow(data);
+            }
+        }).onFailure(this::showErrorDialog);
     }
 
     /**
@@ -88,9 +110,21 @@ public class DashboardForm extends javax.swing.JPanel {
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "Siswa", "Title 2", "Title 3", "Title 4"
+                "Nama Siswa", "Jenis Kelamin", "Orang Tua/Wali", "Tahun Masuk", "Kelas", "Total Pembayaran", "Terakhir Transaksi"
             }
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+        // center align
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
