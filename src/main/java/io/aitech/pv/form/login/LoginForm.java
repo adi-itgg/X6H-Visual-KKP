@@ -39,7 +39,7 @@ public class LoginForm extends JPanel implements ActionListener {
 
         add(new JLabel(new FlatSVGIcon("icon/login_logo.svg", 1.5f)));
 
-        JLabel lbTitle = new JLabel("Selamat datang", JLabel.CENTER);
+        JLabel lbTitle = new JLabel("SIPA X6H", JLabel.CENTER);
         lbTitle.putClientProperty(FlatClientProperties.STYLE,
                 "font:bold +15;");
         add(lbTitle, "gapy 8 8");
@@ -75,7 +75,7 @@ public class LoginForm extends JPanel implements ActionListener {
 
         add(lbPassword, "gapy 10 5,split 2");
 
-        this.btnForgotPassword = createNoBorderButton("Lupa kata sandi ?");
+        this.btnForgotPassword = createNoBorderButton("");
         btnForgotPassword.setActionCommand(ActionCommand.FORGOT_PASSWORD.name());
         add(btnForgotPassword, "grow 0,gapy 10 5");
 
