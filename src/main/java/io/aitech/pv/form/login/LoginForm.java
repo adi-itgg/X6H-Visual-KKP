@@ -195,6 +195,7 @@ public class LoginForm extends JPanel implements ActionListener {
             mainForm.setSelectedMenu(0, 0);
             mainForm.hideMenu();
 
+            mainFrame.remove(this);
             mainFrame.setSize(new Dimension(1366, 768));
             mainFrame.setContainer(mainForm);
             return;

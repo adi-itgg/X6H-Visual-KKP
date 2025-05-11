@@ -13,6 +13,7 @@ import io.aitech.pv.form.content.parent.MasterParentForm;
 import io.aitech.pv.form.content.student.MasterStudentForm;
 import io.aitech.pv.form.content.teacher.MasterTeacherForm;
 import io.aitech.pv.form.content.transaction.TransactionForm;
+import io.aitech.pv.form.login.LoginForm;
 import io.aitech.pv.form.menu.Menu;
 import io.aitech.pv.form.menu.MenuAction;
 
@@ -83,8 +84,8 @@ public class MainForm extends JLayeredPane implements LayoutManager {
                 showForm(new MasterInvoiceForm(mainFrame));
             } else if (index == 7) {
                 showForm(new TransactionForm(mainFrame));
-            } else if (index == 9) {
-//                logout();
+            } else if (index == 8) {
+                logout();
             } else {
                 action.cancel();
             }
@@ -171,4 +172,10 @@ public class MainForm extends JLayeredPane implements LayoutManager {
             panelBody.setBounds(bodyx, y, bodyWidth, height);
         }
     }
+
+    private void logout() {
+        mainFrame.remove(this);
+        mainFrame.showNewFrame();
+    }
+
 }

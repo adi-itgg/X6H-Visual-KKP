@@ -25,6 +25,7 @@ public class MainFrame extends JFrame {
     private final Vertx vertx;
     private final Context context;
     private final AppConfiguration config;
+    private final Pool pool;
 
     // repositories
     private final LoginRepository loginRepository;
@@ -41,6 +42,7 @@ public class MainFrame extends JFrame {
         this.vertx = vertx;
         this.context = context;
         this.config = config;
+        this.pool = pool;
 
         // initialize repositories
         this.loginRepository = new LoginRepositoryImpl(pool);
@@ -56,13 +58,23 @@ public class MainFrame extends JFrame {
 
         // setup UI
         log.info("Starting UI application");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(new Dimension(666, 668));
-        setLocationRelativeTo(null);
-        setLayout(new MigLayout("al center center"));
-        add(new LoginForm(this));
-        setVisible(true);
+        showLoginForm();
         log.info("UI application started");
+    }
+
+    private void showLoginForm() {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(new Dimension(666, 668));
+        this.setLocationRelativeTo(null);
+        this.setLayout(new MigLayout("al center center"));
+        this.add(new LoginForm(this));
+        this.setVisible(true);
+    }
+
+    public void showNewFrame() {
+        new MainFrame(vertx, context, pool, config);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.dispose();
     }
 
     public AppConfiguration config() {
