@@ -45,12 +45,18 @@ public class TransactionForm extends MouseWithKeyAdapter implements BaseForm, Mo
 
     private Timer searchDelayTimer;
 
+    private boolean isInitialized;
+
     public TransactionForm(MainFrame mainFrame) {
         this.vertx = mainFrame.vertx();
         this.transactionRepository = mainFrame.transactionRepository();
     }
 
     public void initialize() {
+        if (isInitialized) {
+            return;
+        }
+        isInitialized = true;
         // initialize Table
         String[] headerColumns = {"Id", "Nama Siswa", "Orang Tua/Wali", "Total", "Tanggal Transaksi"};
         this.model = new DefaultTableModel(headerColumns, 0) {

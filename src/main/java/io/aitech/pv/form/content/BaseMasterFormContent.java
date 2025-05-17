@@ -162,21 +162,18 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
         if (selectedRow == -1) {
             return;
         }
-        int code = JOptionPane.showConfirmDialog(getMainPanel(), "Yakin ingin menyimpan baris ini?", UIManager.getString("OptionPane.titleText"), JOptionPane.YES_NO_OPTION);
-        if (code == JOptionPane.YES_OPTION) {
-            List<Object> params = new ArrayList<>();
-            for (int i = 0; i < getHeaderColumns().length; i++) {
-                Object value = model.getValueAt(selectedRow, i);
-                value = mapColumnValue(i, value);
-                params.add(value);
-            }
-            repository.save(params).onSuccess(v -> {
-                fetchData();
-            }).onFailure(e -> {
-                log.error("Failed to save data", e);
-                showErrorDialog("Failed to save data - " + e.getMessage());
-            });
+        List<Object> params = new ArrayList<>();
+        for (int i = 0; i < getHeaderColumns().length; i++) {
+            Object value = model.getValueAt(selectedRow, i);
+            value = mapColumnValue(i, value);
+            params.add(value);
         }
+        repository.save(params).onSuccess(v -> {
+            fetchData();
+        }).onFailure(e -> {
+            log.error("Failed to save data", e);
+            showErrorDialog("Failed to save data - " + e.getMessage());
+        });
     }
 
     protected Object mapColumnValue(int index, Object value) {

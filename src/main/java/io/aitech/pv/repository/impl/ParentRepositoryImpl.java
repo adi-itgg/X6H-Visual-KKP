@@ -35,6 +35,11 @@ public class ParentRepositoryImpl implements ParentRepository {
 
     @Override
     public Future<Void> save(List<Object> params) {
+        Tuple tuple = Tuple.tuple();
+        for (int i = 1; i < params.size(); i++) {
+            tuple.addValue(params.get(i));
+        }
+        tuple.addValue(params.getFirst());
         return pool.preparedQuery("""
                         UPDATE m_parent
                             SET nik = ?,
@@ -44,7 +49,7 @@ public class ParentRepositoryImpl implements ParentRepository {
                                 address = ?,
                                 updated_at = CURRENT_TIMESTAMP
                         WHERE id = ?
-                        """).execute(Tuple.tuple(params))
+                        """).execute(tuple)
                 .mapEmpty();
     }
 
