@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class BaseMasterFormContent<R extends BaseMasterRepository> extends MouseWithKeyAdapter implements BaseForm {
 
+    private boolean isInitialized;
+
     protected final Logger log = LoggerFactory.getLogger(getClass().asSubclass(getClass()));
 
     protected final Vertx vertx;
@@ -38,6 +40,11 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
     }
 
     protected void initialize() {
+
+        if (this.isInitialized) {
+            return;
+        }
+        this.isInitialized = true;
         // initialize Table
         this.model = new DefaultTableModel(getHeaderColumns(), 0);
         getTable().setModel(model);
