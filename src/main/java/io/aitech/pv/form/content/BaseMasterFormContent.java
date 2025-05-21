@@ -31,6 +31,7 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
     protected JPopupMenu popupMenu;
 
     protected Timer searchDelayTimer;
+    private boolean isInitialized;
 
     public BaseMasterFormContent(Vertx vertx, R repository) {
         this.vertx = vertx;
@@ -38,6 +39,10 @@ public abstract class BaseMasterFormContent<R extends BaseMasterRepository> exte
     }
 
     protected void initialize() {
+        if (this.isInitialized) {
+            return;
+        }
+        this.isInitialized = true;
         // initialize Table
         this.model = new DefaultTableModel(getHeaderColumns(), 0);
         getTable().setModel(model);
