@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="#888888">
+  <!-- Head -->
+  <circle cx="32" cy="20" r="10" />
+
+  <!-- Body -->
+  <path d="M16 52c0-8.84 7.16-16 16-16s16 7.16 16 16v4H16v-4z" />
+
+  <!-- Shoulders / Base -->
+  <path d="M12 56h40a2 2 0 0 1 2 2v2H10v-2a2 2 0 0 1 2-2z" />
+</svg>

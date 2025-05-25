@@ -2,16 +2,6 @@
 
 this project build using java swing with flatlaf and miglayout for modern UI.
 
-### Login Form
-![sample login](preview/login.png)
-
-## Minimum Project Requirement
-
-- Login
-- Menu
-- 6 Form's (Master & Monitoring)
-- 4 Report
-
 ## Compile Project
 The Minimum java version is 21 - [Download Java 21](https://adoptium.net/temurin/releases/)
 
@@ -19,9 +9,6 @@ The Minimum java version is 21 - [Download Java 21](https://adoptium.net/temurin
 
 ## Run Project
 `java -jar output-file.jar`
-
-## Design References
-- [FlatLaf Official Documentation](https://www.formdev.com/flatlaf/)
 
 ## Library Resources
 - [FlatLaf](https://github.com/JFormDesigner/FlatLaf) - FlatLaf library for the modern UI design theme

@@ -1,0 +1,17 @@
+<svg width="24" height="24" viewBox="0 0 64 64" fill="#888888" xmlns="http://www.w3.org/2000/svg">
+  <!-- Papan tulis -->
+  <rect x="10" y="10" width="44" height="20" rx="2" />
+
+  <!-- Meja dan siswa -->
+  <!-- Siswa tengah -->
+  <circle cx="32" cy="38" r="4" />
+  <rect x="28" y="44" width="8" height="4" rx="1" />
+
+  <!-- Siswa kiri -->
+  <circle cx="20" cy="38" r="3" />
+  <rect x="17" y="43" width="6" height="3" rx="1" />
+
+  <!-- Siswa kanan -->
+  <circle cx="44" cy="38" r="3" />
+  <rect x="41" y="43" width="6" height="3" rx="1" />
+</svg>

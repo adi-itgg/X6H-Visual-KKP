@@ -1,0 +1,13 @@
+<svg width="24" height="24" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="#888888">
+  <!-- Kepala guru -->
+  <circle cx="20" cy="20" r="8" />
+
+  <!-- Tubuh guru -->
+  <path d="M10 50c0-7 5.82-12 10-12s10 5 10 12v4H10v-4z" />
+
+  <!-- Papan tulis -->
+  <rect x="36" y="14" width="20" height="16" rx="2" />
+
+  <!-- Pen (kapur) di bawah papan -->
+  <rect x="42" y="32" width="8" height="2" rx="1" />
+</svg>
