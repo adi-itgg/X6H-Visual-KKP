@@ -1,14 +1,5 @@
 {
   "appName": "SIPA X6H",
-  "postgres": {
-    "host": "localhost",
-    "port": 5432,
-    "database": "x6h-visual",
-    "user": "x6h-pemrograman-visual",
-    "password": "123qwe",
-    "pipeliningLimit": 16,
-    "poolSize": 8
-  },
   "mysql": {
     "host": "10.8.0.1",
     "port": 3306,

@@ -89,7 +89,7 @@ public class MainVerticle extends AbstractVerticle {
 
         // Pool options
         PoolOptions poolOptions = new PoolOptions()
-                .setMaxSize(config.postgres().poolSize());
+                .setMaxSize(config.mysql().poolSize());
 
         // Create the pooled client
         Pool pool = Pool.pool(vertx, connectOptions, poolOptions);
