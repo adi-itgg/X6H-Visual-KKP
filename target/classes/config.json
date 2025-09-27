@@ -1,11 +1,11 @@
 {
   "appName": "SIPA X6H",
   "mysql": {
-    "host": "10.8.0.1",
-    "port": 3306,
+    "host": "vps.adi-it.web.id",
+    "port": 33063,
     "database": "dev-sipa-x6h",
-    "user": "user-vpn",
-    "password": "123qwe",
+    "user": "dev-sipa-x6h",
+    "password": "af085926-d947-4c60-b52b-8f22a1d57926",
     "pipeliningLimit": 8,
     "poolSize": 2
   }

@@ -110,7 +110,7 @@ public class DashboardForm extends javax.swing.JPanel {
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "Nama Siswa", "Jenis Kelamin", "Orang Tua/Wali", "Tahun Masuk", "Kelas", "Total Pembayaran", "Terakhir Transaksi"
+                "Nama Siswa", "Jenis Kelamin", "Orang Tua/Wali", "Total Pembayaran", "Terakhir Transaksi"
             }
         ) {
             @Override

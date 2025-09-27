@@ -41,8 +41,6 @@ public class DashboardRepositoryImpl implements DashboardRepository {
                 SELECT s.name,
                        s.gender,
                        p.name                                         as parent_name,
-                       COALESCE(ts.enter_year, '-')                   as enter_year,
-                       COALESCE(c.name, '-')                          as class_name,
                        COALESCE(sum(COALESCE(bs.total_amount, 0)), 0) as total_amount,
                        COALESCE(bs.created_at, '-')                   as created_at
                 FROM m_student s
